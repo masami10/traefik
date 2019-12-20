@@ -35,6 +35,7 @@ type Middleware struct {
 	Compress          *Compress          `json:"compress,omitempty" toml:"compress,omitempty" yaml:"compress,omitempty" label:"allowEmpty"`
 	PassTLSClientCert *PassTLSClientCert `json:"passTLSClientCert,omitempty" toml:"passTLSClientCert,omitempty" yaml:"passTLSClientCert,omitempty"`
 	Retry             *Retry             `json:"retry,omitempty" toml:"retry,omitempty" yaml:"retry,omitempty"`
+	Xml2Json          *Xml2Json          `json:"xml2json,omitempty" toml:"xml2json,omitempty" yaml:"xml2json,omitempty"`
 }
 
 // +k8s:deepcopy-gen=true
@@ -351,6 +352,13 @@ type ReplacePathRegex struct {
 // Retry holds the retry configuration.
 type Retry struct {
 	Attempts int `json:"attempts,omitempty" toml:"attempts,omitempty" yaml:"attempts,omitempty" export:"true"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// Retry holds the retry configuration.
+type Xml2Json struct {
+	Header string `json:"header,omitempty" toml:"header,omitempty" yaml:"header,omitempty"`
 }
 
 // +k8s:deepcopy-gen=true

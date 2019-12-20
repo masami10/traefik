@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/containous/traefik/v2/pkg/middlewares/xml2json"
 	"net/http"
 	"strings"
 
@@ -300,6 +301,16 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		middleware = func(next http.Handler) (http.Handler, error) {
 			// FIXME missing metrics / accessLog
 			return retry.New(ctx, next, *config.Retry, retry.Listeners{}, middlewareName)
+		}
+	}
+
+	// Xml2Json
+	if config.Xml2Json != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return xml2json.New(ctx, next, *config.Xml2Json, middlewareName)
 		}
 	}
 

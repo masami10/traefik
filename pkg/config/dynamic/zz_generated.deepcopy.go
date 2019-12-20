@@ -679,6 +679,11 @@ func (in *Middleware) DeepCopyInto(out *Middleware) {
 		*out = new(Retry)
 		**out = **in
 	}
+	if in.Xml2Json != nil {
+		in, out := &in.Xml2Json, &out.Xml2Json
+		*out = new(Xml2Json)
+		**out = **in
+	}
 	return
 }
 
