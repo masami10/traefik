@@ -3,8 +3,7 @@ package xml2json
 import (
 	"bytes"
 	"context"
-	"encoding/json"
-	"encoding/xml"
+	xj "github.com/basgys/goxml2json"
 	"github.com/containous/traefik/v2/pkg/config/dynamic"
 	"github.com/containous/traefik/v2/pkg/log"
 	"github.com/containous/traefik/v2/pkg/middlewares"
@@ -41,8 +40,8 @@ func (a *xml2json) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	body := req.Body
 
-	var oldBody []byte
-	if _, err := ioutil.ReadAll(body); err != nil {
+	data, err := xj.Convert(body)
+	if err != nil {
 		logger.Errorf("Xml2Json Request Body Read Error", req.URL.Path, err)
 		http.Error(rw, "Xml2Json Request Body Read Error", http.StatusInternalServerError)
 		return
@@ -52,15 +51,7 @@ func (a *xml2json) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		logger.Errorf("Xml2Json Body Close Error", req.URL.Path, err)
 	}
 
-	var rd interface{}
-
-	if  err := xml.Unmarshal(oldBody, &rd); err != nil {
-		logger.Errorf("Xml2Json Request Body Read Unmarshal Error: %s", req.URL.Path, err)
-		http.Error(rw, "Xml2Json Request Body Read Unmarshal Error", http.StatusInternalServerError)
-		return
-	}
-
-	newBodyContent, _ := json.Marshal(rd)
+	newBodyContent := data.Bytes()
 	req.Body = ioutil.NopCloser(bytes.NewReader(newBodyContent))
 
 	a.next.ServeHTTP(rw, req)
