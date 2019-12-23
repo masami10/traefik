@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - dev
+    docker:
+      - image: circleci/golang:latest
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: build docker image
+          command: |
+            mkdir -p /go/src/github.com/masami10/rush && cd /go/src/github.com/masami10/rush
+            cp -r /home/circleci/project/* ./
+            ls -al ./
+            make
+            docker login -u $DOCKER_USER -p $DOCKER_PWD
+            sh ./build_docker.sh
