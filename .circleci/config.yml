@@ -13,6 +13,7 @@ jobs:
       - run:
           name: build docker image
           command: |
+            go get -v github.com/containous/traefik
             mkdir -p /go/src/github.com/masami10/traefik && cd /go/src/github.com/masami10/traefik
             cp -r /home/circleci/project/* ./
             ls -al ./
