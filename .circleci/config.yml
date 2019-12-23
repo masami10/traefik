@@ -13,7 +13,7 @@ jobs:
       - run:
           name: build docker image
           command: |
-            mkdir -p /go/src/github.com/masami10/rush && cd /go/src/github.com/masami10/rush
+            mkdir -p /go/src/github.com/masami10/traefik && cd /go/src/github.com/masami10/traefik
             cp -r /home/circleci/project/* ./
             ls -al ./
             make
