@@ -50,9 +50,12 @@ func (a *xml2json) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	if err := body.Close(); err != nil {
 		logger.Errorf("Xml2Json Body Close Error", req.URL.Path, err)
 	}
+	req.Header.Set("Content-Type", "application/json")
 
 	newBodyContent := data.Bytes()
 	req.Body = ioutil.NopCloser(bytes.NewReader(newBodyContent))
+
+	req.ContentLength = int64(len(newBodyContent))
 
 	a.next.ServeHTTP(rw, req)
 }
