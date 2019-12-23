@@ -32,6 +32,6 @@ WORKDIR /go/src/github.com/containous/traefik
 # Download go modules
 COPY go.mod .
 COPY go.sum .
-RUN GO111MODULE=on GOPROXY=https://proxy.golang.org go mod download
+RUN GO111MODULE=on GOPROXY=https://goproxy.cn go mod download
 
 COPY . /go/src/github.com/containous/traefik

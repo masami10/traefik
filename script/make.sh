@@ -2,7 +2,7 @@
 set -e
 
 export GO111MODULE=on
-export GOPROXY=https://proxy.golang.org
+export GOPROXY=https://goproxy.cn
 
 # List of bundles to create when no argument is passed
 DEFAULT_BUNDLES=(
